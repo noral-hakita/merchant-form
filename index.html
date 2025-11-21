@@ -3,37 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Form to Google Sheets</title>
+    <title>Merchant Acquiring Form</title>
     <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --success: #27ae60;
+            --error: #e74c3c;
+            --border-radius: 6px;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         body {
-            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            background: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
             color: #333;
             line-height: 1.6;
             padding: 20px;
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
         }
         
         .container {
-            max-width: 600px;
-            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
             background: white;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
             overflow: hidden;
         }
         
         header {
-            background: #2575fc;
+            background: var(--primary);
             color: white;
             padding: 25px;
             text-align: center;
@@ -41,20 +50,41 @@
         
         h1 {
             font-size: 28px;
-            margin-bottom: 10px;
-        }
-        
-        .subtitle {
-            font-size: 16px;
-            opacity: 0.9;
+            margin-bottom: 5px;
         }
         
         .form-container {
-            padding: 30px;
+            padding: 25px;
+        }
+        
+        .form-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: var(--border-radius);
+            background: #f9f9f9;
+        }
+        
+        .section-title {
+            background: var(--secondary);
+            color: white;
+            padding: 12px 15px;
+            margin: -20px -20px 20px -20px;
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 15px;
         }
         
         .form-group {
-            margin-bottom: 20px;
+            flex: 1;
+            min-width: 200px;
         }
         
         label {
@@ -68,47 +98,174 @@
             width: 100%;
             padding: 12px 15px;
             border: 1px solid #ddd;
-            border-radius: 5px;
+            border-radius: var(--border-radius);
             font-size: 16px;
-            transition: border 0.3s;
+            transition: all 0.3s;
         }
         
         input:focus, select:focus, textarea:focus {
-            border-color: #2575fc;
+            border-color: var(--secondary);
             outline: none;
-            box-shadow: 0 0 0 2px rgba(37, 117, 252, 0.2);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
         }
         
-        textarea {
-            min-height: 100px;
-            resize: vertical;
+        .input-with-icon {
+            position: relative;
+        }
+        
+        .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #777;
+        }
+        
+        .checkbox-group, .radio-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 5px;
+        }
+        
+        .checkbox-item, .radio-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .qr-types {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .qr-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            background: white;
+        }
+        
+        .qr-item input[type="checkbox"] {
+            width: auto;
+        }
+        
+        .qr-item input[type="number"] {
+            width: 70px;
+        }
+        
+        /* File Upload Styles */
+        .file-upload-group {
+            margin-bottom: 20px;
+        }
+        
+        .file-upload-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 10px;
+        }
+        
+        .file-upload-item {
+            border: 2px dashed #ddd;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s;
+            background: white;
+            cursor: pointer;
+        }
+        
+        .file-upload-item:hover {
+            border-color: var(--secondary);
+            background: #f8f9fa;
+        }
+        
+        .file-upload-item.dragover {
+            border-color: var(--secondary);
+            background: #e3f2fd;
+        }
+        
+        .file-upload-icon {
+            font-size: 24px;
+            color: #777;
+            margin-bottom: 10px;
+        }
+        
+        .file-upload-text {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        
+        .file-upload-input {
+            display: none;
+        }
+        
+        .file-preview {
+            margin-top: 10px;
+            display: none;
+        }
+        
+        .file-preview img {
+            max-width: 100%;
+            max-height: 150px;
+            border-radius: var(--border-radius);
+            border: 1px solid #ddd;
+        }
+        
+        .file-name {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+            word-break: break-all;
+        }
+        
+        .remove-file {
+            background: var(--error);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 12px;
+            margin-top: 5px;
         }
         
         button {
-            background: #2575fc;
+            background: var(--secondary);
             color: white;
             border: none;
-            padding: 14px 20px;
+            padding: 14px 25px;
             font-size: 16px;
-            border-radius: 5px;
+            border-radius: var(--border-radius);
             cursor: pointer;
-            width: 100%;
             font-weight: 600;
             transition: background 0.3s;
+            display: block;
+            width: 100%;
+            margin-top: 10px;
         }
         
         button:hover {
-            background: #1a68e3;
+            background: #2980b9;
         }
         
         button:disabled {
-            background: #a0c1ff;
+            background: #bdc3c7;
             cursor: not-allowed;
         }
         
         .message {
             padding: 15px;
-            border-radius: 5px;
+            border-radius: var(--border-radius);
             margin-top: 20px;
             text-align: center;
             display: none;
@@ -116,52 +273,45 @@
         
         .success {
             background: #d4edda;
-            color: #155724;
+            color: var(--success);
             border: 1px solid #c3e6cb;
         }
         
         .error {
             background: #f8d7da;
-            color: #721c24;
+            color: var(--error);
             border: 1px solid #f5c6cb;
         }
         
-        .instructions {
-            background: #f8f9fa;
-            border-left: 4px solid #2575fc;
-            padding: 15px;
-            margin-top: 25px;
-            border-radius: 0 5px 5px 0;
+        .required::after {
+            content: " *";
+            color: var(--error);
         }
         
-        .instructions h3 {
-            margin-bottom: 10px;
-            color: #2575fc;
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #f0f0f0;
+            border-radius: 3px;
+            margin-top: 10px;
+            overflow: hidden;
+            display: none;
         }
         
-        .instructions ol {
-            padding-left: 20px;
+        .progress {
+            height: 100%;
+            background: var(--success);
+            width: 0%;
+            transition: width 0.3s;
         }
         
-        .instructions li {
-            margin-bottom: 8px;
-        }
-        
-        footer {
-            text-align: center;
-            padding: 15px;
-            color: #777;
-            font-size: 14px;
-            border-top: 1px solid #eee;
-        }
-        
-        @media (max-width: 600px) {
-            body {
-                padding: 10px;
+        @media (max-width: 768px) {
+            .form-row {
+                flex-direction: column;
             }
             
-            .form-container {
-                padding: 20px;
+            .qr-types, .file-upload-container {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -169,114 +319,587 @@
 <body>
     <div class="container">
         <header>
-            <h1>Contact Form</h1>
-            <p class="subtitle">Fill out the form below and the data will be saved to Google Sheets</p>
+            <h1>Merchant Acquiring Form</h1>
         </header>
         
         <div class="form-container">
-            <form id="contactForm">
-                <div class="form-group">
-                    <label for="name">Full Name</label>
-                    <input type="text" id="name" name="name" required>
+            <form id="merchantForm">
+                <!-- MERCHANT INFO SECTION -->
+                <div class="form-section">
+                    <div class="section-title">MERCHANT INFO</div>
+                    
+                    <div class="form-group">
+                        <label for="companyName" class="required">Company / Outlet / Shop Name</label>
+                        <input type="text" id="companyName" name="companyName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="brandName" class="required">Brand Name</label>
+                        <input type="text" id="brandName" name="brandName" required>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="shopNumber">Shop #</label>
+                            <input type="text" id="shopNumber" name="shopNumber">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="plotNumber">Plot #</label>
+                            <input type="text" id="plotNumber" name="plotNumber">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="street">Street</label>
+                            <input type="text" id="street" name="street">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="roadName">Road Name</label>
+                            <input type="text" id="roadName" name="roadName">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="landmark">Near (Landmark)</label>
+                            <input type="text" id="landmark" name="landmark">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="area">Area</label>
+                            <input type="text" id="area" name="area">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="city" class="required">City</label>
+                        <select id="city" name="city" required>
+                            <option value="" disabled selected>Select City</option>
+                            <option value="KHI">KHI</option>
+                            <option value="ISB">ISB</option>
+                            <option value="LHR">LHR</option>
+                            <option value="HYD">HYD</option>
+                            <option value="FSD">FSD</option>
+                            <option value="MULTAN">MULTAN</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="required">Outlet Type</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="outletShop" name="outletType" value="Shop">
+                                <label for="outletShop">Shop</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="outletMart" name="outletType" value="Mart">
+                                <label for="outletMart">Mart</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="outletStall" name="outletType" value="Stall/Cabin">
+                                <label for="outletStall">Stall/Cabin</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="outletCart" name="outletType" value="Cart">
+                                <label for="outletCart">Cart</label>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 
-                <div class="form-group">
-                    <label for="email">Email Address</label>
-                    <input type="email" id="email" name="email" required>
+                <!-- OWNER INFO SECTION -->
+                <div class="form-section">
+                    <div class="section-title">OWNER INFO</div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="applicantName" class="required">Applicant Name</label>
+                            <input type="text" id="applicantName" name="applicantName" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="fatherName" class="required">Father Name</label>
+                            <input type="text" id="fatherName" name="fatherName" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="dob" class="required">Date of Birth</label>
+                            <input type="date" id="dob" name="dob" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="cnic" class="required">CNIC #</label>
+                            <div class="input-with-icon">
+                                <input type="password" id="cnic" name="cnic" required>
+                                <button type="button" class="toggle-password" id="toggleCnic">👁️</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="mobile" class="required">Mobile Number</label>
+                            <input type="tel" id="mobile" name="mobile" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email" class="required">Email</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                    </div>
                 </div>
                 
-                <div class="form-group">
-                    <label for="phone">Phone Number</label>
-                    <input type="tel" id="phone" name="phone">
+                <!-- BANK INFO SECTION -->
+                <div class="form-section">
+                    <div class="section-title">BANK INFO</div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="accountTitle" class="required">Account Title</label>
+                            <input type="text" id="accountTitle" name="accountTitle" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="accountNumber" class="required">Account Number</label>
+                            <input type="number" id="accountNumber" name="accountNumber" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="iban" class="required">IBAN Number</label>
+                            <input type="text" id="iban" name="iban" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="branchName" class="required">Branch Name</label>
+                            <input type="text" id="branchName" name="branchName" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="bankReferral">Bank Referral ID</label>
+                        <input type="text" id="bankReferral" name="bankReferral">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="required">Bank Name</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="bankBAFL" name="bankName" value="BAFL">
+                                <label for="bankBAFL">BAFL</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="bankMCB" name="bankName" value="MCB">
+                                <label for="bankMCB">MCB</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="bankUBL" name="bankName" value="UBL">
+                                <label for="bankUBL">UBL</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="bankFBL" name="bankName" value="FBL">
+                                <label for="bankFBL">FBL</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="bankHBL" name="bankName" value="HBL">
+                                <label for="bankHBL">HBL</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="bankHMB" name="bankName" value="HMB">
+                                <label for="bankHMB">HMB</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="bankDIB" name="bankName" value="DIB">
+                                <label for="bankDIB">DIB</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="bankALIED" name="bankName" value="ALIED">
+                                <label for="bankALIED">ALIED</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="bankOther" name="bankName" value="other">
+                                <label for="bankOther">Other</label>
+                            </div>
+                        </div>
+                        <input type="text" id="bankOtherText" name="bankOtherText" placeholder="Specify other bank" style="display: none; margin-top: 10px;">
+                    </div>
                 </div>
                 
-                <div class="form-group">
-                    <label for="subject">Subject</label>
-                    <select id="subject" name="subject" required>
-                        <option value="" disabled selected>Select a subject</option>
-                        <option value="General Inquiry">General Inquiry</option>
-                        <option value="Support Request">Support Request</option>
-                        <option value="Feedback">Feedback</option>
-                        <option value="Other">Other</option>
-                    </select>
+                <!-- COMPANY & BUSINESS SECTION -->
+                <div class="form-section">
+                    <div class="section-title">COMPANY & BUSINESS</div>
+                    
+                    <div class="form-group">
+                        <label class="required">Company Type</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="companyIndividual" name="companyType" value="Individual">
+                                <label for="companyIndividual">Individual</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="companyProprietor" name="companyType" value="Proprietor">
+                                <label for="companyProprietor">Proprietor</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="companyPrivate" name="companyType" value="Private Ltd">
+                                <label for="companyPrivate">Private Ltd</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="companyPartnership" name="companyType" value="Partnership">
+                                <label for="companyPartnership">Partnership</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="businessType" class="required">Business Type</label>
+                        <select id="businessType" name="businessType" required>
+                            <option value="" disabled selected>Select Business Type</option>
+                            <option value="General Store">General Store</option>
+                            <option value="Mobile Accessories">Mobile Accessories</option>
+                            <option value="Medical Store">Medical Store</option>
+                            <option value="Garments">Garments</option>
+                            <option value="Grocery Store">Grocery Store</option>
+                            <option value="Hair Cutting">Hair Cutting</option>
+                            <option value="Electronics">Electronics</option>
+                            <option value="Restaurant">Restaurant</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <input type="text" id="businessOtherText" name="businessOtherText" placeholder="Specify other business type" style="display: none; margin-top: 10px;">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>QR Types</label>
+                        <div class="qr-types">
+                            <div class="qr-item">
+                                <input type="checkbox" id="qrFiber" name="qrFiber">
+                                <label for="qrFiber">Fiber</label>
+                                <input type="number" id="qrFiberQty" name="qrFiberQty" min="0" placeholder="Qty">
+                            </div>
+                            <div class="qr-item">
+                                <input type="checkbox" id="qrAcrylic" name="qrAcrylic">
+                                <label for="qrAcrylic">Acrylic</label>
+                                <input type="number" id="qrAcrylicQty" name="qrAcrylicQty" min="0" placeholder="Qty">
+                            </div>
+                            <div class="qr-item">
+                                <input type="checkbox" id="qrSmallSticker" name="qrSmallSticker">
+                                <label for="qrSmallSticker">Small Sticker</label>
+                                <input type="number" id="qrSmallStickerQty" name="qrSmallStickerQty" min="0" placeholder="Qty">
+                            </div>
+                            <div class="qr-item">
+                                <input type="checkbox" id="qrLargeSticker" name="qrLargeSticker">
+                                <label for="qrLargeSticker">Large Sticker</label>
+                                <input type="number" id="qrLargeStickerQty" name="qrLargeStickerQty" min="0" placeholder="Qty">
+                            </div>
+                            <div class="qr-item">
+                                <input type="checkbox" id="qrBadge" name="qrBadge">
+                                <label for="qrBadge">Badge</label>
+                                <input type="number" id="qrBadgeQty" name="qrBadgeQty" min="0" placeholder="Qty">
+                            </div>
+                            <div class="qr-item">
+                                <input type="checkbox" id="qrTableTop" name="qrTableTop">
+                                <label for="qrTableTop">Table Top</label>
+                                <input type="number" id="qrTableTopQty" name="qrTableTopQty" min="0" placeholder="Qty">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="employeeName" class="required">Employee Name (filling this form)</label>
+                        <input type="text" id="employeeName" name="employeeName" required>
+                    </div>
                 </div>
                 
-                <div class="form-group">
-                    <label for="message">Message</label>
-                    <textarea id="message" name="message" required></textarea>
+                <!-- ATTACHMENTS SECTION -->
+                <div class="form-section">
+                    <div class="section-title">ATTACHMENTS</div>
+                    
+                    <!-- Shop Pictures -->
+                    <div class="file-upload-group">
+                        <label class="required">Shop Pictures (3 required)</label>
+                        <div class="file-upload-container" id="shopPicturesContainer">
+                            <div class="file-upload-item" data-type="shop" data-index="1">
+                                <div class="file-upload-icon">📷</div>
+                                <div class="file-upload-text">Shop Picture 1</div>
+                                <input type="file" class="file-upload-input" accept="image/*" data-type="shop" data-index="1">
+                                <div class="file-preview"></div>
+                            </div>
+                            <div class="file-upload-item" data-type="shop" data-index="2">
+                                <div class="file-upload-icon">📷</div>
+                                <div class="file-upload-text">Shop Picture 2</div>
+                                <input type="file" class="file-upload-input" accept="image/*" data-type="shop" data-index="2">
+                                <div class="file-preview"></div>
+                            </div>
+                            <div class="file-upload-item" data-type="shop" data-index="3">
+                                <div class="file-upload-icon">📷</div>
+                                <div class="file-upload-text">Shop Picture 3</div>
+                                <input type="file" class="file-upload-input" accept="image/*" data-type="shop" data-index="3">
+                                <div class="file-preview"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- CNIC Pictures -->
+                    <div class="file-upload-group">
+                        <label class="required">CNIC Pictures (Front & Back)</label>
+                        <div class="file-upload-container" id="cnicPicturesContainer">
+                            <div class="file-upload-item" data-type="cnic" data-index="front">
+                                <div class="file-upload-icon">🆔</div>
+                                <div class="file-upload-text">CNIC Front</div>
+                                <input type="file" class="file-upload-input" accept="image/*" data-type="cnic" data-index="front">
+                                <div class="file-preview"></div>
+                            </div>
+                            <div class="file-upload-item" data-type="cnic" data-index="back">
+                                <div class="file-upload-icon">🆔</div>
+                                <div class="file-upload-text">CNIC Back</div>
+                                <input type="file" class="file-upload-input" accept="image/*" data-type="cnic" data-index="back">
+                                <div class="file-preview"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- QR Code Picture -->
+                    <div class="file-upload-group">
+                        <label>QR Code Picture (Optional)</label>
+                        <div class="file-upload-container" id="qrCodeContainer">
+                            <div class="file-upload-item" data-type="qr" data-index="1">
+                                <div class="file-upload-icon">📱</div>
+                                <div class="file-upload-text">QR Code</div>
+                                <input type="file" class="file-upload-input" accept="image/*" data-type="qr" data-index="1">
+                                <div class="file-preview"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="progress-bar" id="progressBar">
+                    <div class="progress" id="progress"></div>
                 </div>
                 
                 <button type="submit" id="submitBtn">Submit Form</button>
             </form>
             
             <div id="messageArea"></div>
-            
-            <div class="instructions">
-                <h3>How to Connect to Google Sheets</h3>
-                <ol>
-                    <li>Create a new Google Sheet and note its ID from the URL</li>
-                    <li>Create a Google Apps Script with the provided code</li>
-                    <li>Deploy the script as a web app</li>
-                    <li>Update the scriptUrl in the JavaScript code</li>
-                </ol>
-            </div>
         </div>
-        
-        <footer>
-            <p>Form data will be saved to Google Sheets</p>
-        </footer>
     </div>
 
     <script>
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
+        // Store uploaded files as base64
+        const uploadedFiles = {
+            shop: {},
+            cnic: {},
+            qr: {}
+        };
+
+        document.getElementById('merchantForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            // Get form data
-            const formData = new FormData(this);
-            const data = {};
-            formData.forEach((value, key) => {
-                data[key] = value;
-            });
+            // Validate required files
+            if (Object.keys(uploadedFiles.shop).length < 3) {
+                showMessage('Please upload all 3 shop pictures', 'error');
+                return;
+            }
             
-            // Add timestamp
-            data.timestamp = new Date().toISOString();
+            if (Object.keys(uploadedFiles.cnic).length < 2) {
+                showMessage('Please upload both CNIC front and back pictures', 'error');
+                return;
+            }
             
             // Show loading state
             const submitBtn = document.getElementById('submitBtn');
+            const progressBar = document.getElementById('progressBar');
+            const progress = document.getElementById('progress');
+            
             submitBtn.disabled = true;
-            submitBtn.textContent = 'Submitting...';
+            submitBtn.textContent = 'Uploading Files...';
+            progressBar.style.display = 'block';
+            progress.style.width = '0%';
             
             // Clear previous messages
             const messageArea = document.getElementById('messageArea');
             messageArea.style.display = 'none';
             messageArea.className = 'message';
             
-            // IMPORTANT: Replace this URL with your Google Apps Script Web App URL
-            const scriptUrl = 'https://script.google.com/macros/s/AKfycbyih0qCoQ8f6tVzc7s3cXc9H_MENBtJomqDPwfd62RfzEdIiQphRWJsm91HuTdUYFhpvQ/exec';
-            
-            // Send data to Google Apps Script
-            fetch(scriptUrl, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data)
-            })
-            .then(() => {
-                // Since we're using no-cors mode, we can't read the response
-                // But we assume it was successful if no error is thrown
-                showMessage('Form submitted successfully!', 'success');
-                document.getElementById('contactForm').reset();
-            })
-            .catch(error => {
+            try {
+                // Get form data
+                const formData = new FormData(this);
+                const data = {};
+                
+                // Process form data
+                for (let [key, value] of formData.entries()) {
+                    if (data[key]) {
+                        if (Array.isArray(data[key])) {
+                            data[key].push(value);
+                        } else {
+                            data[key] = [data[key], value];
+                        }
+                    } else {
+                        data[key] = value;
+                    }
+                }
+                
+                // Add timestamp
+                data.timestamp = new Date().toISOString();
+                
+                // Prepare files for upload (convert to base64)
+                data.shopPictures = uploadedFiles.shop;
+                data.cnicPictures = uploadedFiles.cnic;
+                data.qrPicture = uploadedFiles.qr[1] || null; // Assuming only one QR code
+                
+                // Update progress
+                progress.style.width = '50%';
+                
+                // IMPORTANT: Replace this URL with your Google Apps Script Web App URL
+                const scriptUrl = 'https://script.google.com/macros/s/AKfycbzNim9o9YG6olFNCXzgzNvm_bjp7iT-4SJLqHM4PTWPCwTYdK0oWvsop2-hTm1zDYNc/exec';
+                
+                // Send data to Google Apps Script
+                const response = await fetch(scriptUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                if (result.result === 'success') {
+                    showMessage('Form submitted successfully! Files uploaded to Google Drive.', 'success');
+                    document.getElementById('merchantForm').reset();
+                    // Clear file previews
+                    clearFilePreviews();
+                } else {
+                    throw new Error(result.error || 'Server error');
+                }
+                
+            } catch (error) {
                 console.error('Error:', error);
                 showMessage('There was an error submitting the form. Please try again.', 'error');
-            })
-            .finally(() => {
+            } finally {
                 submitBtn.disabled = false;
                 submitBtn.textContent = 'Submit Form';
+                progressBar.style.display = 'none';
+            }
+        });
+
+        // File upload handling
+        document.querySelectorAll('.file-upload-item').forEach(item => {
+            const input = item.querySelector('.file-upload-input');
+            const preview = item.querySelector('.file-preview');
+            
+            // Click to upload
+            item.addEventListener('click', () => {
+                input.click();
             });
+            
+            // File selection
+            input.addEventListener('change', (e) => {
+                if (e.target.files.length > 0) {
+                    handleFileSelect(e.target.files[0], item, preview);
+                }
+            });
+            
+            // Drag and drop
+            item.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                item.classList.add('dragover');
+            });
+            
+            item.addEventListener('dragleave', () => {
+                item.classList.remove('dragover');
+            });
+            
+            item.addEventListener('drop', (e) => {
+                e.preventDefault();
+                item.classList.remove('dragover');
+                if (e.dataTransfer.files.length > 0) {
+                    handleFileSelect(e.dataTransfer.files[0], item, preview);
+                }
+            });
+        });
+        
+        function handleFileSelect(file, item, preview) {
+            const type = item.dataset.type;
+            const index = item.dataset.index;
+            
+            // Validate file type
+            if (!file.type.startsWith('image/')) {
+                showMessage('Please upload only image files', 'error');
+                return;
+            }
+            
+            // Validate file size (5MB max)
+            if (file.size > 5 * 1024 * 1024) {
+                showMessage('File size should be less than 5MB', 'error');
+                return;
+            }
+            
+            // Convert file to base64
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                // Store base64 data
+                uploadedFiles[type][index] = e.target.result;
+                
+                // Show preview
+                preview.innerHTML = `
+                    <img src="${e.target.result}" alt="Preview">
+                    <div class="file-name">${file.name}</div>
+                    <button type="button" class="remove-file">Remove</button>
+                `;
+                preview.style.display = 'block';
+                
+                // Add remove functionality
+                preview.querySelector('.remove-file').addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    delete uploadedFiles[type][index];
+                    preview.style.display = 'none';
+                    preview.innerHTML = '';
+                });
+            };
+            reader.readAsDataURL(file);
+        }
+        
+        function clearFilePreviews() {
+            document.querySelectorAll('.file-preview').forEach(preview => {
+                preview.style.display = 'none';
+                preview.innerHTML = '';
+            });
+            // Clear stored files
+            Object.keys(uploadedFiles).forEach(type => {
+                uploadedFiles[type] = {};
+            });
+        }
+        
+        // Toggle CNIC visibility
+        document.getElementById('toggleCnic').addEventListener('click', function() {
+            const cnicInput = document.getElementById('cnic');
+            if (cnicInput.type === 'password') {
+                cnicInput.type = 'text';
+                this.textContent = '🙈';
+            } else {
+                cnicInput.type = 'password';
+                this.textContent = '👁️';
+            }
+        });
+        
+        // Show/hide other bank text input
+        document.getElementById('bankOther').addEventListener('change', function() {
+            const otherText = document.getElementById('bankOtherText');
+            otherText.style.display = this.checked ? 'block' : 'none';
+            if (!this.checked) otherText.value = '';
+        });
+        
+        // Show/hide other business type text input
+        document.getElementById('businessType').addEventListener('change', function() {
+            const otherText = document.getElementById('businessOtherText');
+            otherText.style.display = this.value === 'Other' ? 'block' : 'none';
+            if (this.value !== 'Other') otherText.value = '';
         });
         
         function showMessage(text, type) {
@@ -291,4 +914,3 @@
     </script>
 </body>
 </html>
-
