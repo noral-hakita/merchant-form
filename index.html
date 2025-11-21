@@ -1,0 +1,272 @@
+<!-- index.html -->
+<!doctype html>
+<html>
+<head>
+  <base target="_top">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Merchant Acquiring Form</title>
+  <style>
+    :root{--bg:#f4f6f8;--card:#fff;--accent:#2b9edb;--muted:#6b7280}
+    body{font-family:Inter,system-ui,Arial,sans-serif;background:var(--bg);margin:0;padding:18px}
+    .wrap{max-width:920px;margin:18px auto;background:var(--card);padding:18px;border-radius:12px;box-shadow:0 8px 30px rgba(11,22,39,0.06)}
+    h1{margin:0 0 8px;font-size:22px;color:#14233b;text-align:center}
+    p.lead{margin:0 0 12px;color:var(--muted);text-align:center}
+    .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+    label{display:block;font-size:13px;color:#1f2937;margin-bottom:6px}
+    input[type="text"],input[type="email"],input[type="date"],select,input[type="file"]{width:100%;padding:8px;border-radius:8px;border:1px solid #e6e9ef;font-size:14px}
+    .full{grid-column:1 / -1}
+    .section{margin-top:14px;padding-top:10px;border-top:1px dashed #eef2f6}
+    .checkbox-row{display:flex;flex-wrap:wrap;gap:10px}
+    .checkbox-row label{display:flex;align-items:center;gap:8px;background:#f8fafc;padding:8px 10px;border-radius:8px;border:1px solid #eef3f8;font-size:14px}
+    .qty{width:70px;margin-left:8px;padding:6px}
+    button{width:100%;padding:12px;border-radius:10px;border:none;background:var(--accent);color:#fff;font-size:16px;margin-top:12px;cursor:pointer}
+    .note{font-size:13px;color:var(--muted);text-align:center;margin-top:8px}
+    @media(max-width:760px){.grid{grid-template-columns:1fr}.full{grid-column:1}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Merchant Acquiring Form</h1>
+    <p class="lead">Fill details and attach required files. check before submiting.</p>
+
+    <form id="merchantForm" enctype="multipart/form-data">
+      <div class="grid">
+        <div class="full section"><strong>MERCHANT INFO</strong></div>
+
+        <div class="full">
+          <label>Company / Outlet / Shop Name</label>
+          <input type="text" name="companyName" required>
+        </div>
+
+        <div>
+          <label>Brand Name</label>
+          <input type="text" name="brandName">
+        </div>
+
+        <div>
+          <label>Shop # / Plot # / Street</label>
+          <input type="text" name="shopPlotStreet">
+        </div>
+
+        <div>
+          <label>Road Name</label>
+          <input type="text" name="roadName">
+        </div>
+
+        <div>
+          <label>Near (Landmark) / Area</label>
+          <input type="text" name="landmarkArea">
+        </div>
+
+        <div>
+          <label>City</label>
+          <select name="city" required>
+            <option value="KHI">KHI</option>
+            <option value="LHR">LHR</option>
+            <option value="ISB">ISB</option>
+            <option value="HYD">HYD</option>
+            <option value="MULTAN">MULTAN</option>
+            <option value="FSD">FSD</option>
+          </select>
+        </div>
+
+        <div class="full">
+          <label>Outlet Type</label>
+          <div class="checkbox-row">
+            <label><input type="checkbox" name="outletType" value="Shop"> Shop</label>
+            <label><input type="checkbox" name="outletType" value="Mart"> Mart</label>
+            <label><input type="checkbox" name="outletType" value="Stall/Cabin"> Stall/Cabin</label>
+            <label><input type="checkbox" name="outletType" value="Cart"> Cart</label>
+          </div>
+        </div>
+
+        <div class="full section"><strong>OWNER INFO</strong></div>
+
+        <div>
+          <label>Applicant Name</label>
+          <input type="text" name="applicantName" required>
+        </div>
+
+        <div>
+          <label>Father Name</label>
+          <input type="text" name="fatherName">
+        </div>
+
+        <div>
+          <label>Date of Birth</label>
+          <input type="date" name="dob">
+        </div>
+
+        <div>
+          <label>CNIC #</label>
+          <input type="text" name="cnic">
+        </div>
+
+        <div>
+          <label>Mobile Number</label>
+          <input type="text" name="mobile">
+        </div>
+
+        <div>
+          <label>Email</label>
+          <input type="email" name="email">
+        </div>
+
+        <div class="full section"><strong>BANK INFO</strong></div>
+
+        <div>
+          <label>Account Title</label>
+          <input type="text" name="accTitle">
+        </div>
+
+        <div>
+          <label>Account Number</label>
+          <input type="text" name="accNumber">
+        </div>
+
+        <div>
+          <label>IBAN Number</label>
+          <input type="text" name="iban">
+        </div>
+
+        <div>
+          <label>Branch Name</label>
+          <input type="text" name="branchName">
+        </div>
+
+        <div>
+          <label>Bank Referral ID</label>
+          <input type="text" name="bankRefID">
+        </div>
+
+        <div>
+          <label>Bank Name</label>
+          <select name="bankName" id="bankNameSelect">
+            <option value="BAFL">BAFL</option>
+            <option value="MCB">MCB</option>
+            <option value="UBL">UBL</option>
+            <option value="FBL">FBL</option>
+            <option value="HBL">HBL</option>
+            <option value="HMB">HMB</option>
+            <option value="ALLIED">ALLIED</option>
+            <option value="DIB">DIB</option>
+            <option value="Other">Other</option>
+          </select>
+          <input type="text" name="bankOther" id="bankOtherTxt" placeholder="Specify other bank" style="display:none;margin-top:6px;">
+        </div>
+
+        <div class="full section"><strong>COMPANY & BUSINESS</strong></div>
+
+        <div class="full">
+          <label>Company Type</label>
+          <div class="checkbox-row">
+            <label><input type="checkbox" name="companyType" value="Individual"> Individual</label>
+            <label><input type="checkbox" name="companyType" value="Proprietor"> Proprietor</label>
+            <label><input type="checkbox" name="companyType" value="Private Ltd"> Private Ltd</label>
+            <label><input type="checkbox" name="companyType" value="Partnership"> Partnership</label>
+          </div>
+        </div>
+
+        <div class="full">
+          <label>Business Type</label>
+          <div class="checkbox-row" id="businessTypeRow">
+            <label><input type="checkbox" name="businessType" value="General Store"> General Store</label>
+            <label><input type="checkbox" name="businessType" value="Mobile Accessories"> Mobile Accessories</label>
+            <label><input type="checkbox" name="businessType" value="Medical Store"> Medical Store</label>
+            <label><input type="checkbox" name="businessType" value="Garments"> Garments</label>
+            <label><input type="checkbox" name="businessType" value="Grocery Store"> Grocery Store</label>
+            <label><input type="checkbox" name="businessType" value="Hair Cutting"> Hair Cutting</label>
+            <label><input type="checkbox" name="businessType" value="Electronics"> Electronics</label>
+            <label><input type="checkbox" name="businessType" value="Restaurant"> Restaurant</label>
+            <label><input type="checkbox" id="businessOtherChk" name="businessType" value="Other"> Other</label>
+          </div>
+          <input type="text" name="businessOther" id="businessOtherTxt" placeholder="Specify other business type" style="display:none;margin-top:6px;">
+        </div>
+
+        <div class="full section">
+          <label>QR Types (check & add qty)</label>
+          <div class="checkbox-row">
+            <label><input type="checkbox" name="qrType" value="Fiber"> Fiber <input class="qty" type="text" name="qrQtyFiber" placeholder="qty"></label>
+            <label><input type="checkbox" name="qrType" value="Acrylic"> Acrylic <input class="qty" type="text" name="qrQtyAcrylic" placeholder="qty"></label>
+            <label><input type="checkbox" name="qrType" value="Small Sticker"> Small Sticker <input class="qty" type="text" name="qrQtySmallSticker" placeholder="qty"></label>
+            <label><input type="checkbox" name="qrType" value="Large Sticker"> Large Sticker <input class="qty" type="text" name="qrQtyLargeSticker" placeholder="qty"></label>
+            <label><input type="checkbox" name="qrType" value="Badge"> Badge <input class="qty" type="text" name="qrQtyBadge" placeholder="qty"></label>
+            <label><input type="checkbox" name="qrType" value="Table Top"> Table Top <input class="qty" type="text" name="qrQtyTableTop" placeholder="qty"></label>
+          </div>
+        </div>
+
+        <div class="full section">
+          <label>Employee Name (filling this form)</label>
+          <input type="text" name="employeeName" required>
+        </div>
+
+        <div class="full section">
+          <label>Attachments (Shop pic, CNIC front/back, QR image)</label>
+          <input type="file" name="shopPic" accept="image/*" required>
+          <input type="file" name="cnicPic" accept="image/*" required>
+          <input type="file" name="qrPic" accept="image/*" required>
+        </div>
+
+        <div class="full">
+          <button type="submit">Submit Form</button>
+        </div>
+
+      </div>
+    </form>
+
+    <p class="note">After submitting, check your Google Sheet (opened from the same Google account) for the new row.</p>
+  </div>
+
+  <script>
+    const form = document.getElementById('merchantForm');
+    const bankNameSelect = document.getElementById('bankNameSelect');
+    const bankOtherTxt = document.getElementById('bankOtherTxt');
+    const businessOtherChk = document.getElementById('businessOtherChk');
+    const businessOtherTxt = document.getElementById('businessOtherTxt');
+
+    // toggle bank other
+    bankNameSelect.addEventListener('change', () => {
+      bankOtherTxt.style.display = bankNameSelect.value === 'Other' ? 'block' : 'none';
+    });
+
+    // toggle business other (checkbox)
+    businessOtherChk.addEventListener('change', () => {
+      businessOtherTxt.style.display = businessOtherChk.checked ? 'block' : 'none';
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      // Use FormData (multipart/form-data) to include files
+      const fd = new FormData(form);
+
+      // collect all checkbox groups to comma-separated strings
+      ['outletType','companyType','businessType','qrType'].forEach(name => {
+        const checked = Array.from(form.querySelectorAll(`input[name="${name}"]:checked`)).map(i => i.value);
+        fd.set(name, checked.join(', '));
+      });
+
+      // convert to URLSearchParams is NOT used here because we send FormData (files)
+      // POST to the Apps Script web app URL - replace with your deployed URL if needed
+      const url = window.location.href + "?mode=post"; // when served by Apps Script this works
+      try {
+        const res = await fetch(url, {
+          method: 'POST',
+          body: fd
+        });
+
+        const data = await res.json();
+        if (data && data.status === 'success') {
+          alert('Submitted — thank you!');
+          form.reset();
+        } else {
+          alert('Submission failed: ' + (data && data.message ? data.message : 'unknown error'));
+        }
+      } catch (err) {
+        alert('Submit error: ' + err.message);
+      }
+    });
+  </script>
+</body>
+</html>
