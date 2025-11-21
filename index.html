@@ -717,9 +717,9 @@
             const progress = document.getElementById('progress');
             
             submitBtn.disabled = true;
-            submitBtn.textContent = 'Uploading Files...';
+            submitBtn.textContent = 'Submitting...';
             progressBar.style.display = 'block';
-            progress.style.width = '0%';
+            progress.style.width = '50%';
             
             // Clear previous messages
             const messageArea = document.getElementById('messageArea');
@@ -747,16 +747,13 @@
                 // Add timestamp
                 data.timestamp = new Date().toISOString();
                 
-                // Prepare files for upload (convert to base64)
-                data.shopPictures = uploadedFiles.shop;
-                data.cnicPictures = uploadedFiles.cnic;
-                data.qrPicture = uploadedFiles.qr[1] || null; // Assuming only one QR code
-                
-                // Update progress
-                progress.style.width = '50%';
+                // Add file information (just file names for now)
+                data.shopPictures = Object.keys(uploadedFiles.shop);
+                data.cnicPictures = Object.keys(uploadedFiles.cnic);
+                data.qrPicture = Object.keys(uploadedFiles.qr).length > 0;
                 
                 // IMPORTANT: Replace this URL with your Google Apps Script Web App URL
-                const scriptUrl = 'https://script.google.com/macros/s/AKfycbzNim9o9YG6olFNCXzgzNvm_bjp7iT-4SJLqHM4PTWPCwTYdK0oWvsop2-hTm1zDYNc/exec';
+                const scriptUrl = 'https://script.google.com/macros/s/AKfycbzggi8bj0TCUthlv6NnhZtQk_a-smsGUfbdp7WNTfMvSSCDjZISnkYeG-aFv7xv1Pa8eg/exec';
                 
                 // Send data to Google Apps Script
                 const response = await fetch(scriptUrl, {
@@ -770,7 +767,8 @@
                 const result = await response.json();
                 
                 if (result.result === 'success') {
-                    showMessage('Form submitted successfully! Files uploaded to Google Drive.', 'success');
+                    progress.style.width = '100%';
+                    showMessage('Form submitted successfully!', 'success');
                     document.getElementById('merchantForm').reset();
                     // Clear file previews
                     clearFilePreviews();
@@ -780,11 +778,13 @@
                 
             } catch (error) {
                 console.error('Error:', error);
-                showMessage('There was an error submitting the form. Please try again.', 'error');
+                showMessage('There was an error submitting the form. Please try again. Error: ' + error.message, 'error');
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.textContent = 'Submit Form';
-                progressBar.style.display = 'none';
+                setTimeout(() => {
+                    progressBar.style.display = 'none';
+                }, 2000);
             }
         });
 
@@ -840,13 +840,12 @@
                 return;
             }
             
-            // Convert file to base64
+            // Store file info (we'll just track that files were uploaded)
+            uploadedFiles[type][index] = file.name;
+            
+            // Show preview
             const reader = new FileReader();
             reader.onload = (e) => {
-                // Store base64 data
-                uploadedFiles[type][index] = e.target.result;
-                
-                // Show preview
                 preview.innerHTML = `
                     <img src="${e.target.result}" alt="Preview">
                     <div class="file-name">${file.name}</div>
