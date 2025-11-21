@@ -28,7 +28,7 @@
 <body>
   <div class="wrap">
     <h1>Merchant Acquiring Form</h1>
-    <p class="lead">Fill details and attach required files. check before submiting.</p>
+    <p class="lead">Fill details and attach required files. Check before submitting.</p>
 
     <form id="merchantForm" enctype="multipart/form-data">
       <div class="grid">
@@ -211,7 +211,6 @@
         <div class="full">
           <button type="submit">Submit Form</button>
         </div>
-
       </div>
     </form>
 
@@ -225,12 +224,12 @@
     const businessOtherChk = document.getElementById('businessOtherChk');
     const businessOtherTxt = document.getElementById('businessOtherTxt');
 
-    // toggle bank other
+    // Toggle bank "Other" field
     bankNameSelect.addEventListener('change', () => {
       bankOtherTxt.style.display = bankNameSelect.value === 'Other' ? 'block' : 'none';
     });
 
-    // toggle business other (checkbox)
+    // Toggle business "Other" field
     businessOtherChk.addEventListener('change', () => {
       businessOtherTxt.style.display = businessOtherChk.checked ? 'block' : 'none';
     });
@@ -238,7 +237,6 @@
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
 
-      // Use FormData (multipart/form-data) to include files
       const fd = new FormData(form);
 
       // collect all checkbox groups to comma-separated strings
@@ -247,9 +245,9 @@
         fd.set(name, checked.join(', '));
       });
 
-      // convert to URLSearchParams is NOT used here because we send FormData (files)
-      // POST to the Apps Script web app URL - replace with your deployed URL if needed
-      const url = window.location.href + "?mode=post"; // when served by Apps Script this works
+      // ← HERE IS THE IMPORTANT CHANGE: use your Apps Script URL directly
+      const url = "https://script.google.com/macros/s/AKfycbzSL7UFSx5QJiOfj1VoyEndAm_EnkZqRduC1Gjn8gxHyOHGIHMrf7ecvwKB5jCzvthc/exec";
+
       try {
         const res = await fetch(url, {
           method: 'POST',
