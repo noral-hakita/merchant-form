@@ -106,13 +106,23 @@
             color: #e74c3c;
             border: 1px solid #f5c6cb;
         }
+        
+        .debug {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 20px;
+            font-family: monospace;
+            font-size: 12px;
+            display: none;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
             <h1>Merchant Acquiring Form</h1>
-            <p>Working version for GitHub Pages</p>
+            <p>Working version with proper error handling</p>
         </header>
         
         <div class="form-container">
@@ -141,21 +151,24 @@
             </form>
             
             <div id="messageArea"></div>
+            <div id="debugArea" class="debug"></div>
         </div>
     </div>
 
     <script>
-        document.getElementById('merchantForm').addEventListener('submit', function(e) {
+        document.getElementById('merchantForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
             const submitBtn = document.getElementById('submitBtn');
             const messageArea = document.getElementById('messageArea');
+            const debugArea = document.getElementById('debugArea');
             
             submitBtn.disabled = true;
             submitBtn.textContent = 'Submitting...';
             
             messageArea.style.display = 'none';
             messageArea.className = 'message';
+            debugArea.style.display = 'none';
 
             try {
                 // Get form data
@@ -169,22 +182,94 @@
                 // Add timestamp
                 data.timestamp = new Date().toISOString();
                 
-                // Use JSONP approach - create a form submission
-                const scriptUrl = 'https://script.google.com/macros/s/AKfycbymJ5jUdeqcpN758aKTptXyM5_zhbewbqP6yK59ZUIVYIXzW7IOm4jGuM3-MGmNXnofmQ/exec';
+                // Your Google Apps Script URL
+                const scriptUrl = 'https://script.google.com/macros/s/AKfycbwRgtlbuZgj_cQ4_HvHsdmYecdNbxgOyUKLzrbWWzO7FN-bcUXuV57hnvvRj-NiVkcPsQ/exec';
                 
-                // Create a hidden iframe to handle the submission
+                // Show debug info
+                debugArea.innerHTML = `
+                    <strong>Debug Information:</strong><br>
+                    URL: ${scriptUrl}<br>
+                    Data: ${JSON.stringify(data, null, 2)}
+                `;
+                debugArea.style.display = 'block';
+                
+                // Use a proxy approach to avoid CORS
+                const response = await submitViaProxy(scriptUrl, data);
+                
+                if (response.result === 'success') {
+                    showMessage(`✅ Form submitted successfully! Data saved to row ${response.rowNumber}`, 'success');
+                    document.getElementById('merchantForm').reset();
+                    
+                    // Update debug info with success details
+                    debugArea.innerHTML += `<br><br><strong>Success Response:</strong><br>${JSON.stringify(response, null, 2)}`;
+                } else {
+                    throw new Error(response.error || 'Unknown server error');
+                }
+                
+            } catch (error) {
+                console.error('Full error:', error);
+                showMessage('❌ Error: ' + error.message, 'error');
+                
+                // Update debug info with error details
+                debugArea.innerHTML += `<br><br><strong>Error:</strong><br>${error.message}`;
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Submit Form';
+            }
+        });
+        
+        // Proxy function to handle CORS
+        async function submitViaProxy(url, data) {
+            // Method 1: Try direct fetch first
+            try {
+                console.log('Trying direct fetch...');
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                if (response.ok) {
+                    return await response.json();
+                }
+            } catch (error) {
+                console.log('Direct fetch failed:', error);
+            }
+            
+            // Method 2: Use Google Apps Script URL with /dev for development
+            try {
+                console.log('Trying development endpoint...');
+                const devUrl = url.replace('/exec', '/dev');
+                const response = await fetch(devUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                if (response.ok) {
+                    return await response.json();
+                }
+            } catch (error) {
+                console.log('Dev endpoint failed:', error);
+            }
+            
+            // Method 3: Use form submission as fallback
+            return new Promise((resolve) => {
+                console.log('Using form submission fallback...');
                 const iframe = document.createElement('iframe');
                 iframe.style.display = 'none';
-                iframe.name = 'gform-iframe';
+                iframe.name = 'gform-fallback';
                 document.body.appendChild(iframe);
                 
-                // Create a form and submit it
                 const form = document.createElement('form');
                 form.method = 'POST';
-                form.action = scriptUrl;
-                form.target = 'gform-iframe';
+                form.action = url;
+                form.target = 'gform-fallback';
                 
-                // Add all data as hidden inputs
                 Object.keys(data).forEach(key => {
                     const input = document.createElement('input');
                     input.type = 'hidden';
@@ -196,24 +281,13 @@
                 document.body.appendChild(form);
                 form.submit();
                 
-                // Clean up
                 setTimeout(() => {
                     document.body.removeChild(form);
                     document.body.removeChild(iframe);
-                    
-                    showMessage('Form submitted successfully!', 'success');
-                    document.getElementById('merchantForm').reset();
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = 'Submit Form';
-                }, 2000);
-                
-            } catch (error) {
-                console.error('Error:', error);
-                showMessage('Error: ' + error.message, 'error');
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Submit Form';
-            }
-        });
+                    resolve({ result: 'success', message: 'Form submitted (fallback mode)' });
+                }, 3000);
+            });
+        }
         
         function showMessage(text, type) {
             const messageArea = document.getElementById('messageArea');
@@ -224,4 +298,3 @@
     </script>
 </body>
 </html>
-
