@@ -1,624 +1,585 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Merchant Acquiring Form</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        body {
-            background-color: #f0f2f5;
-            margin: 0;
-            padding: 20px;
-            color: #333;
-        }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background-color: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-        h1 {
-            text-align: center;
-            color: #2c3e50;
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #ecf0f1;
-        }
-        .section {
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #ecf0f1;
-        }
-        .section-title {
-            font-weight: 600;
-            margin-bottom: 15px;
-            color: #2c3e50;
-            font-size: 1.2em;
-            display: flex;
-            align-items: center;
-        }
-        .section-title:before {
-            content: "";
-            display: inline-block;
-            width: 5px;
-            height: 20px;
-            background-color: #3498db;
-            margin-right: 10px;
-            border-radius: 2px;
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: #2c3e50;
-        }
-        input[type="text"],
-        input[type="date"],
-        input[type="email"],
-        input[type="tel"],
-        input[type="password"],
-        select {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 15px;
-            transition: all 0.3s;
-        }
-        input:focus, select:focus {
-            outline: none;
-            border-color: #3498db;
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
-        }
-        .row {
-            display: flex;
-            flex-wrap: wrap;
-            margin: 0 -10px;
-        }
-        .col {
-            flex: 1;
-            padding: 0 10px;
-            min-width: 200px;
-        }
-        .submit-btn {
-            background: linear-gradient(to right, #3498db, #2980b9);
-            color: white;
-            padding: 15px 20px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 600;
-            width: 100%;
-            margin-top: 15px;
-            transition: all 0.3s;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        .submit-btn:hover {
-            background: linear-gradient(to right, #2980b9, #3498db);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 8px rgba(0,0,0,0.15);
-        }
-        .footer {
-            text-align: center;
-            margin-top: 40px;
-            font-size: 13px;
-            color: #7f8c8d;
-            line-height: 1.6;
-        }
-        .required::after {
-            content: " *";
-            color: #e74c3c;
-        }
-        .password-container {
-            position: relative;
-        }
-        .toggle-password {
-            position: absolute;
-            right: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            cursor: pointer;
-            color: #7f8c8d;
-            font-size: 18px;
-        }
-        .toggle-password:focus {
-            outline: none;
-        }
-        .file-input {
-            padding: 10px;
-            background-color: #f8f9fa;
-            border: 1px dashed #ced4da;
-            border-radius: 6px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .file-input:hover {
-            background-color: #e9ecef;
-        }
-        .form-note {
-            font-size: 12px;
-            color: #7f8c8d;
-            margin-top: 5px;
-        }
-        @media (max-width: 600px) {
-            .container {
-                padding: 20px;
-            }
-            .col {
-                min-width: 100%;
-                margin-bottom: 15px;
-            }
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Merchant Acquiring Form</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #ecf0f1;
+        }
+        .section {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        .section-title {
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #2c3e50;
+            font-size: 1.2em;
+            display: flex;
+            align-items: center;
+        }
+        .section-title:before {
+            content: "";
+            display: inline-block;
+            width: 5px;
+            height: 20px;
+            background-color: #3498db;
+            margin-right: 10px;
+            border-radius: 2px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #2c3e50;
+        }
+        input[type="text"],
+        input[type="date"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="password"],
+        select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 15px;
+            transition: all 0.3s;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -10px;
+        }
+        .col {
+            flex: 1;
+            padding: 0 10px;
+            min-width: 200px;
+        }
+        .submit-btn {
+            background: linear-gradient(to right, #3498db, #2980b9);
+            color: white;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            width: 100%;
+            margin-top: 15px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .submit-btn:hover {
+            background: linear-gradient(to right, #2980b9, #3498db);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+        }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 13px;
+            color: #7f8c8d;
+            line-height: 1.6;
+        }
+        .required::after {
+            content: " *";
+            color: #e74c3c;
+        }
+        .password-container {
+            position: relative;
+        }
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #7f8c8d;
+            font-size: 18px;
+        }
+        .toggle-password:focus {
+            outline: none;
+        }
+        .file-input {
+            padding: 10px;
+            background-color: #f8f9fa;
+            border: 1px dashed #ced4da;
+            border-radius: 6px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .file-input:hover {
+            background-color: #e9ecef;
+        }
+        .form-note {
+            font-size: 12px;
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            .col {
+                min-width: 100%;
+                margin-bottom: 15px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>MERCHANT ACQUIRING FORM</h1>
-        
-        <form id="merchantForm">
-            <!-- Merchant Information Section -->
-            <div class="section">
-                <div class="section-title">MERCHANT INFORMATION</div>
-                
-                <div class="form-group">
-                    <label class="required">Company Name / Outlet Name</label>
-                    <input type="text" id="companyName" required>
-                </div>
-                
-                <div class="form-group">
-                    <label>Brand Name / Deals In</label>
-                    <input type="text" id="brandName" placeholder="Enter brand name or what you deal in">
-                </div>
-                
-                <div class="row">
-                    <div class="col">
-                        <div class="form-group">
-                            <label>Shop #</label>
-                            <input type="text" id="shopNumber">
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="form-group">
-                            <label>Plot #</label>
-                            <input type="text" id="plotNumber">
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label>Street</label>
-                    <input type="text" id="street">
-                </div>
-                
-                <div class="form-group">
-                    <label>Road Name</label>
-                    <input type="text" id="roadName">
-                </div>
-                
-                <div class="row">
-                    <div class="col">
-                        <div class="form-group">
-                            <label>Near (Landmark)</label>
-                            <input type="text" id="landmark">
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="form-group">
-                            <label>Area</label>
-                            <input type="text" id="area">
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="row">
-                    <div class="col">
-                        <div class="form-group">
-                            <label class="required">City</label>
-                            <select id="city" required>
-                                <option value="">Select City</option>
-                                <option value="KHI">Karachi (KHI)</option>
-                                <option value="LHR">Lahore (LHR)</option>
-                                <option value="ISB">Islamabad (ISB)</option>
-                                <option value="HYD">Hyderabad (HYD)</option>
-                                <option value="MULTAN">Multan</option>
-                                <option value="FSD">Faisalabad (FSD)</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="form-group">
-                            <label>Retail / Outlet Type</label>
-                            <select id="outletType">
-                                <option value="">Select Type</option>
-                                <option value="shop">Shop</option>
-                                <option value="mart">Mart</option>
-                                <option value="stall">Stall / Cabin</option>
-                                <option value="cart">Cart</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Owner Information Section -->
-            <div class="section">
-                <div class="section-title">OWNER INFORMATION</div>
-                
-                <div class="form-group">
-                    <label class="required">Applicant Name</label>
-                    <input type="text" id="applicantName" required>
-                </div>
-                
-                <div class="form-group">
-                    <label class="required">Father's Name</label>
-                    <input type="text" id="fatherName" required>
-                </div>
-                
-                <div class="row">
-                    <div class="col">
-                        <div class="form-group">
-                            <label class="required">Date of Birth</label>
-                            <input type="date" id="dob" required>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="form-group">
-                            <label class="required">CNIC #</label>
-                            <div class="password-container">
-                                <input type="password" id="cnic" required>
-                                <button type="button" class="toggle-password" id="toggleCnic">👁️</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="row">
-                    <div class="col">
-                        <div class="form-group">
-                            <label class="required">CNIC Expiry Date</label>
-                            <input type="date" id="cnicExpiry" required>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="form-group">
-                            <label class="required">Mobile Number</label>
-                            <input type="tel" id="mobileNumber" required>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label>Email Address</label>
-                    <input type="email" id="email">
-                </div>
-                
-                <div class="form-group">
-                    <label>NTN (if any)</label>
-                    <input type="text" id="ntn">
-                </div>
-            </div>
-            
-            <!-- Merchant Personal Information Section -->
-            <div class="section">
-                <div class="section-title">MERCHANT PERSONAL INFORMATION</div>
-                
-                <div class="row">
-                    <div class="col">
-                        <div class="form-group">
-                            <label>Bike Rider: Bike No</label>
-                            <input type="text" id="bikeNumber">
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="form-group">
-                            <label>Car / Van Driver: Car No</label>
-                            <input type="text" id="carNumber">
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="row">
-                    <div class="col">
-                        <div class="form-group">
-                            <label>Delivery Boy: Vehicle No</label>
-                            <input type="text" id="deliveryVehicle">
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="form-group">
-                            <label>Rickshaw Driver: Rickshaw No</label>
-                            <input type="text" id="rickshawNumber">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Bank Details Section -->
-            <div class="section">
-                <div class="section-title">BANK DETAILS</div>
-                
-                <div class="form-group">
-                    <label class="required">Bank Name</label>
-                    <select id="bankName" required>
-                        <option value="">Select Bank</option>
-                        <option value="BAFL">Bank Alfalah (BAFL)</option>
-                        <option value="MCB">MCB Bank</option>
-                        <option value="UBL">United Bank Limited (UBL)</option>
-                        <option value="FBL">Faysal Bank (FBL)</option>
-                        <option value="HBL">Habib Bank Limited (HBL)</option>
-                        <option value="HMB">Habib Metropolitan Bank (HMB)</option>
-                        <option value="ALLIED">Allied Bank</option>
-                        <option value="DIB">Dubai Islamic Bank (DIB)</option>
-                        <option value="other">Other Bank</option>
-                    </select>
-                </div>
-                
-                <div class="form-group" id="otherBankContainer" style="display: none;">
-                    <label class="required">Other Bank Name</label>
-                    <input type="text" id="otherBank">
-                </div>
-                
-                <div class="form-group">
-                    <label class="required">Account Title</label>
-                    <input type="text" id="accountTitle" required>
-                </div>
-                
-                <div class="form-group">
-                    <label class="required">Account Number</label>
-                    <input type="text" id="accountNumber" required>
-                </div>
-                
-                <div class="form-group">
-                    <label class="required">IBAN Number</label>
-                    <input type="text" id="ibanNumber" required>
-                </div>
-                
-                <div class="form-group">
-                    <label class="required">Branch Name</label>
-                    <input type="text" id="branchName" required>
-                </div>
-                
-                <div class="form-group">
-                    <label>Bank Referral ID</label>
-                    <input type="text" id="bankReferral">
-                </div>
-            </div>
-            
-            <!-- Business Information Section -->
-            <div class="section">
-                <div class="section-title">BUSINESS INFORMATION</div>
-                
-                <div class="row">
-                    <div class="col">
-                        <div class="form-group">
-                            <label class="required">Company Type</label>
-                            <select id="companyType" required>
-                                <option value="">Select Type</option>
-                                <option value="individual">Individual</option>
-                                <option value="proprietor">Proprietor</option>
-                                <option value="private">Private Ltd.</option>
-                                <option value="partnership">Partnership</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="form-group">
-                            <label class="required">Business Type</label>
-                            <select id="businessType" required>
-                                <option value="">Select Type</option>
-                                <option value="general">General Store</option>
-                                <option value="mobile">Mobile Accessories</option>
-                                <option value="medical">Medical Store</option>
-                                <option value="garments">Garments</option>
-                                <option value="grocery">Grocery Store</option>
-                                <option value="hair">Hair Cutting</option>
-                                <option value="electronics">Electronics</option>
-                                <option value="restaurant">Restaurant</option>
-                                <option value="other">Other</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="form-group" id="otherBusinessContainer" style="display: none;">
-                    <label class="required">Other Business Type</label>
-                    <input type="text" id="otherBusiness">
-                </div>
-                
-                <div class="form-group">
-                    <label>QR Type</label>
-                    <select id="qrType">
-                        <option value="">Select QR Type</option>
-                        <option value="fiber">Fiber</option>
-                        <option value="acrylic">Acrylic Sandwich</option>
-                        <option value="small">Small Sticker</option>
-                        <option value="large">Large Sticker</option>
-                        <option value="badge">Badge</option>
-                        <option value="ttop">T-Top</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label>Quantity</label>
-                    <input type="text" id="quantity">
-                </div>
-            </div>
-            
-            <!-- Documents Section -->
-            <div class="section">
-                <div class="section-title">DOCUMENTS REQUIRED</div>
-                
-                <div class="form-group">
-                    <label class="required">Shop Picture</label>
-                    <div class="file-input">
-                        <input type="file" id="shopPicture" required style="width: 100%;">
-                    </div>
-                    <div class="form-note">Upload a clear picture of your shop/storefront</div>
-                </div>
-                
-                <div class="form-group">
-                    <label class="required">CNIC (Front/Back)</label>
-                    <div class="file-input">
-                        <input type="file" id="cnicPicture" required style="width: 100%;">
-                    </div>
-                    <div class="form-note">Upload both front and back of your CNIC in a single file or separate files</div>
-                </div>
-                
-                <div class="form-group">
-                    <label class="required">QR Code</label>
-                    <div class="file-input">
-                        <input type="file" id="qrCode" required style="width: 100%;">
-                    </div>
-                    <div class="form-note">Upload your QR code image</div>
-                </div>
-            </div>
-            
-            <!-- Submit Button -->
-            <button type="submit" class="submit-btn">Submit Form</button>
-        </form>
-        
-        <!-- Footer -->
-        <div class="footer">
-            <p>Enabled by:<br>
-            ADMAA Retail Enablement Service (Pvt.) Ltd.<br>
-            Website: <a href="https://admaa.pk" target="_blank">admaa.pk</a> | Contact: 0300-8332737<br>
-            M1 / M2, Mezzanine Floor, Noor Square,<br>
-            Main University Road, Opp. Old Sabzi Mandi, Karachi.</p>
-        </div>
-    </div>
+    <div class="container">
+        <h1>MERCHANT ACQUIRING FORM</h1>
+        
+        <form id="merchantForm">
+                        <div class="section">
+                <div class="section-title">MERCHANT INFORMATION</div>
+                
+                <div class="form-group">
+                    <label class="required">Company Name / Outlet Name</label>
+                                        <input type="text" id="companyName" name="companyName" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Brand Name / Deals In</label>
+                                        <input type="text" id="brandName" name="brandName" placeholder="Enter brand name or what you deal in">
+                </div>
+                
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label>Shop #</label>
+                                                        <input type="text" id="shopNumber" name="shopNumber">
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label>Plot #</label>
+                                                        <input type="text" id="plotNumber" name="plotNumber">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Street</label>
+                                        <input type="text" id="street" name="street">
+                </div>
+                
+                <div class="form-group">
+                    <label>Road Name</label>
+                                        <input type="text" id="roadName" name="roadName">
+                </div>
+                
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label>Near (Landmark)</label>
+                                                        <input type="text" id="landmark" name="landmark">
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label>Area</label>
+                                                        <input type="text" id="area" name="area">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label class="required">City</label>
+                                                        <select id="city" name="city" required>
+                                <option value="">Select City</option>
+                                <option value="KHI">Karachi (KHI)</option>
+                                <option value="LHR">Lahore (LHR)</option>
+                                <option value="ISB">Islamabad (ISB)</option>
+                                <option value="HYD">Hyderabad (HYD)</option>
+                                <option value="MULTAN">Multan</option>
+                                <option value="FSD">Faisalabad (FSD)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label>Retail / Outlet Type</label>
+                                                        <select id="outletType" name="outletType">
+                                <option value="">Select Type</option>
+                                <option value="shop">Shop</option>
+                                <option value="mart">Mart</option>
+                                <option value="stall">Stall / Cabin</option>
+                                <option value="cart">Cart</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+                        <div class="section">
+                <div class="section-title">OWNER INFORMATION</div>
+                
+                <div class="form-group">
+                    <label class="required">Applicant Name</label>
+                                        <input type="text" id="applicantName" name="applicantName" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="required">Father's Name</label>
+                                        <input type="text" id="fatherName" name="fatherName" required>
+                </div>
+                
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label class="required">Date of Birth</label>
+                                                        <input type="date" id="dob" name="dob" required>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label class="required">CNIC #</label>
+                            <div class="password-container">
+                                                                <input type="password" id="cnic" name="cnic" required>
+                                <button type="button" class="toggle-password" id="toggleCnic">👁️</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label class="required">CNIC Expiry Date</label>
+                                                        <input type="date" id="cnicExpiry" name="cnicExpiry" required>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label class="required">Mobile Number</label>
+                                                        <input type="tel" id="mobileNumber" name="mobileNumber" required>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Email Address</label>
+                                        <input type="email" id="email" name="email">
+                </div>
+                
+                <div class="form-group">
+                    <label>NTN (if any)</label>
+                                        <input type="text" id="ntn" name="ntn">
+                </div>
+            </div>
+            
+                        <div class="section">
+                <div class="section-title">MERCHANT PERSONAL INFORMATION</div>
+                
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label>Bike Rider: Bike No</label>
+                                                        <input type="text" id="bikeNumber" name="bikeNumber">
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label>Car / Van Driver: Car No</label>
+                                                        <input type="text" id="carNumber" name="carNumber">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label>Delivery Boy: Vehicle No</label>
+                                                        <input type="text" id="deliveryVehicle" name="deliveryVehicle">
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label>Rickshaw Driver: Rickshaw No</label>
+                                                        <input type="text" id="rickshawNumber" name="rickshawNumber">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+                        <div class="section">
+                <div class="section-title">BANK DETAILS</div>
+                
+                <div class="form-group">
+                    <label class="required">Bank Name</label>
+                                        <select id="bankName" name="bankName" required>
+                        <option value="">Select Bank</option>
+                        <option value="BAFL">Bank Alfalah (BAFL)</option>
+                        <option value="MCB">MCB Bank</option>
+                        <option value="UBL">United Bank Limited (UBL)</option>
+                        <option value="FBL">Faysal Bank (FBL)</option>
+                        <option value="HBL">Habib Bank Limited (HBL)</option>
+                        <option value="HMB">Habib Metropolitan Bank (HMB)</option>
+                        <option value="ALLIED">Allied Bank</option>
+                        <option value="DIB">Dubai Islamic Bank (DIB)</option>
+                        <option value="other">Other Bank</option>
+                    </select>
+                </div>
+                
+                <div class="form-group" id="otherBankContainer" style="display: none;">
+                    <label class="required">Other Bank Name</label>
+                                        <input type="text" id="otherBank" name="otherBank">
+                </div>
+                
+                <div class="form-group">
+                    <label class="required">Account Title</label>
+                                        <input type="text" id="accountTitle" name="accountTitle" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="required">Account Number</label>
+                                        <input type="text" id="accountNumber" name="accountNumber" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="required">IBAN Number</label>
+                                        <input type="text" id="ibanNumber" name="ibanNumber" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="required">Branch Name</label>
+                                        <input type="text" id="branchName" name="branchName" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Bank Referral ID</label>
+                                        <input type="text" id="bankReferral" name="bankReferral">
+                </div>
+            </div>
+            
+                        <div class="section">
+                <div class="section-title">BUSINESS INFORMATION</div>
+                
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label class="required">Company Type</label>
+                                                        <select id="companyType" name="companyType" required>
+                                <option value="">Select Type</option>
+                                <option value="individual">Individual</option>
+                                <option value="proprietor">Proprietor</option>
+                                <option value="private">Private Ltd.</option>
+                                <option value="partnership">Partnership</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label class="required">Business Type</label>
+                                                        <select id="businessType" name="businessType" required>
+                                <option value="">Select Type</option>
+                                <option value="general">General Store</option>
+                                <option value="mobile">Mobile Accessories</option>
+                                <option value="medical">Medical Store</option>
+                                <option value="garments">Garments</option>
+                                <option value="grocery">Grocery Store</option>
+                                <option value="hair">Hair Cutting</option>
+                                <option value="electronics">Electronics</option>
+                                <option value="restaurant">Restaurant</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group" id="otherBusinessContainer" style="display: none;">
+                    <label class="required">Other Business Type</label>
+                                        <input type="text" id="otherBusiness" name="otherBusiness">
+                </div>
+                
+                <div class="form-group">
+                    <label>QR Type</label>
+                                        <select id="qrType" name="qrType">
+                        <option value="">Select QR Type</option>
+                        <option value="fiber">Fiber</option>
+                        <option value="acrylic">Acrylic Sandwich</option>
+                        <option value="small">Small Sticker</option>
+                        <option value="large">Large Sticker</option>
+                        <option value="badge">Badge</option>
+                        <option value="ttop">T-Top</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Quantity</label>
+                                        <input type="text" id="quantity" name="quantity">
+                </div>
+            </div>
+            
+                        <div class="section">
+                <div class="section-title">DOCUMENTS REQUIRED</div>
+                
+                <div class="form-group">
+                    <label class="required">Shop Picture</label>
+                    <div class="file-input">
+                                                <input type="file" id="shopPicture" name="shopPicture" required style="width: 100%;">
+                    </div>
+                    <div class="form-note">Upload a clear picture of your shop/storefront</div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="required">CNIC (Front/Back)</label>
+                    <div class="file-input">
+                                                <input type="file" id="cnicPicture" name="cnicPicture" required style="width: 100%;">
+                    </div>
+                    <div class="form-note">Upload both front and back of your CNIC in a single file or separate files</div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="required">QR Code</label>
+                    <div class="file-input">
+                                                <input type="file" id="qrCode" name="qrCode" required style="width: 100%;">
+                    </div>
+                    <div class="form-note">Upload your QR code image</div>
+                </div>
+            </div>
+            
+                        <button type="submit" class="submit-btn">Submit Form</button>
+        </form>
+        
+                <div class="footer">
+            <p>Enabled by:<br>
+            ADMAA Retail Enablement Service (Pvt.) Ltd.<br>
+            Website: <a href="https://admaa.pk" target="_blank">admaa.pk</a> | Contact: 0300-8332737<br>
+            M1 / M2, Mezzanine Floor, Noor Square,<br>
+            Main University Road, Opp. Old Sabzi Mandi, Karachi.</p>
+        </div>
+    </div>
 
-    <script>
-        document.getElementById('merchantForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Basic validation
-            const requiredFields = document.querySelectorAll('[required]');
-            let isValid = true;
-            
-            requiredFields.forEach(field => {
-                if (!field.value.trim()) {
+    <script>
+        // Store your N8N Webhook URL here
+        const WEBHOOK_URL = 'https://n8n-obzj.onrender.com/webhook-test/formUpload'; 
+
+        document.getElementById('merchantForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Basic validation (kept the same logic)
+            const requiredFields = document.querySelectorAll('[required]');
+            let isValid = true;
+            
+            requiredFields.forEach(field => {
+                if (!field.value.trim() && field.type !== 'file') {
+                    isValid = false;
+                    field.style.borderColor = '#e74c3c';
+                } else if (field.type === 'file' && field.files.length === 0) {
                     isValid = false;
-                    field.style.borderColor = '#e74c3c';
+                    field.closest('.file-input').style.borderColor = '#e74c3c';
                 } else {
-                    field.style.borderColor = '#ddd';
-                }
-            });
-            
-            if (!isValid) {
-                alert('Please fill in all required fields.');
-                return;
-            }
-            
-            // Prepare form data
-            const formData = new FormData(this);
-            
-            // Add additional form data that might not be in form fields
-            const formValues = {
-                companyName: document.getElementById('companyName').value,
-                brandName: document.getElementById('brandName').value,
-                shopNumber: document.getElementById('shopNumber').value,
-                plotNumber: document.getElementById('plotNumber').value,
-                street: document.getElementById('street').value,
-                roadName: document.getElementById('roadName').value,
-                landmark: document.getElementById('landmark').value,
-                area: document.getElementById('area').value,
-                city: document.getElementById('city').value,
-                outletType: document.getElementById('outletType').value,
-                applicantName: document.getElementById('applicantName').value,
-                fatherName: document.getElementById('fatherName').value,
-                dob: document.getElementById('dob').value,
-                cnic: document.getElementById('cnic').value,
-                cnicExpiry: document.getElementById('cnicExpiry').value,
-                mobileNumber: document.getElementById('mobileNumber').value,
-                email: document.getElementById('email').value,
-                ntn: document.getElementById('ntn').value,
-                bikeNumber: document.getElementById('bikeNumber').value,
-                carNumber: document.getElementById('carNumber').value,
-                deliveryVehicle: document.getElementById('deliveryVehicle').value,
-                rickshawNumber: document.getElementById('rickshawNumber').value,
-                bankName: document.getElementById('bankName').value,
-                otherBank: document.getElementById('otherBank').value,
-                accountTitle: document.getElementById('accountTitle').value,
-                accountNumber: document.getElementById('accountNumber').value,
-                ibanNumber: document.getElementById('ibanNumber').value,
-                branchName: document.getElementById('branchName').value,
-                bankReferral: document.getElementById('bankReferral').value,
-                companyType: document.getElementById('companyType').value,
-                businessType: document.getElementById('businessType').value,
-                otherBusiness: document.getElementById('otherBusiness').value,
-                qrType: document.getElementById('qrType').value,
-                quantity: document.getElementById('quantity').value
-            };
-            
-            // Send data to n8n webhook
-            // REPLACE THE URL BELOW WITH YOUR N8N WEBHOOK URL
-            const webhookUrl = 'https://n8n-obzj.onrender.com/webhook-test/formUpload';
-            
-            fetch(webhookUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formValues)
-            })
-            .then(response => {
-                if (response.ok) {
-                    alert('Form submitted successfully!');
-                    document.getElementById('merchantForm').reset();
-                } else {
-                    alert('There was an error submitting the form. Please try again.');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('There was an error submitting the form. Please try again.');
-            });
-        });
-        
-        // Show/hide other bank field
-        document.getElementById('bankName').addEventListener('change', function() {
-            const otherBankContainer = document.getElementById('otherBankContainer');
-            if (this.value === 'other') {
-                otherBankContainer.style.display = 'block';
-            } else {
-                otherBankContainer.style.display = 'none';
-            }
-        });
-        
-        // Show/hide other business type field
-        document.getElementById('businessType').addEventListener('change', function() {
-            const otherBusinessContainer = document.getElementById('otherBusinessContainer');
-            if (this.value === 'other') {
-                otherBusinessContainer.style.display = 'block';
-            } else {
-                otherBusinessContainer.style.display = 'none';
-            }
-        });
-        
-        // Toggle CNIC visibility
-        document.getElementById('toggleCnic').addEventListener('click', function() {
-            const cnicInput = document.getElementById('cnic');
-            if (cnicInput.type === 'password') {
-                cnicInput.type = 'text';
-                this.textContent = '🙈';
-            } else {
-                cnicInput.type = 'password';
-                this.textContent = '👁️';
-            }
-        });
-    </script>
+                    field.style.borderColor = '#ddd';
+                    const fileInputContainer = field.closest('.file-input');
+                    if (fileInputContainer) fileInputContainer.style.borderColor = '#ced4da';
+                }
+            });
+            
+            if (!isValid) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+            
+            // FIX: Create the FormData object, which now works because 
+            // all fields have a 'name' attribute. This object correctly 
+            // bundles text and binary file data into a multipart format.
+            const formData = new FormData(this);
+            
+            // Send data to n8n webhook
+            fetch(WEBHOOK_URL, {
+                method: 'POST',
+                // 🛑 IMPORTANT FIX: We REMOVE the 'Content-Type': 'application/json' header.
+                // The browser will automatically set the correct 'multipart/form-data' 
+                // Content-Type when sending a FormData object.
+                body: formData // FIX: Send the FormData object directly
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('Form submitted successfully!');
+                    document.getElementById('merchantForm').reset();
+                } else {
+                    alert('There was an error submitting the form. Please check your n8n workflow and try again.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('A network error occurred. Please check your connection.');
+            });
+        });
+        
+        // Show/hide other bank field
+        document.getElementById('bankName').addEventListener('change', function() {
+            const otherBankContainer = document.getElementById('otherBankContainer');
+            if (this.value === 'other') {
+                otherBankContainer.style.display = 'block';
+            } else {
+                otherBankContainer.style.display = 'none';
+            }
+        });
+        
+        // Show/hide other business type field
+        document.getElementById('businessType').addEventListener('change', function() {
+            const otherBusinessContainer = document.getElementById('otherBusinessContainer');
+            if (this.value === 'other') {
+                otherBusinessContainer.style.display = 'block';
+            } else {
+                otherBusinessContainer.style.display = 'none';
+            }
+        });
+        
+        // Toggle CNIC visibility
+        document.getElementById('toggleCnic').addEventListener('click', function() {
+            const cnicInput = document.getElementById('cnic');
+            if (cnicInput.type === 'password') {
+                cnicInput.type = 'text';
+                this.textContent = '🙈';
+            } else {
+                cnicInput.type = 'password';
+                this.textContent = '👁️';
+            }
+        });
+    </script>
 </body>
 </html>
