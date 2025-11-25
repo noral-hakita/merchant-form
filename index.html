@@ -635,10 +635,76 @@
         // Store your N8N Webhook URL here
         const WEBHOOK_URL = 'https://noral.gleeze.com/webhook/merchant-form'; 
 
-        document.getElementById('merchantForm').addEventListener('submit', function(e) {
+        // File size limits (in bytes) - Increased limits
+        const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB per file
+        const MAX_TOTAL_SIZE = 10 * 1024 * 1024; // 10MB total for all files
+
+        // Function to validate file sizes
+        function validateFileSizes() {
+            const fileInputs = [
+                document.getElementById('shopPicture'),
+                document.getElementById('cnicPicture'), 
+                document.getElementById('qrCode')
+            ];
+            
+            let totalSize = 0;
+            let errorMessages = [];
+            
+            fileInputs.forEach(input => {
+                if (input.files.length > 0) {
+                    const file = input.files[0];
+                    
+                    // Check individual file size
+                    if (file.size > MAX_FILE_SIZE) {
+                        errorMessages.push(
+                            `"${getFieldName(input.id)}" is too large (${formatFileSize(file.size)}).\n` +
+                            `Maximum allowed per file: ${formatFileSize(MAX_FILE_SIZE)}\n` +
+                            `Please compress your image or use a smaller file.`
+                        );
+                    }
+                    
+                    totalSize += file.size;
+                }
+            });
+            
+            // Check total size
+            if (totalSize > MAX_TOTAL_SIZE) {
+                errorMessages.push(
+                    `Total files size (${formatFileSize(totalSize)}) exceeds maximum allowed (${formatFileSize(MAX_TOTAL_SIZE)}).\n` +
+                    `Please reduce the total size by compressing images.`
+                );
+            }
+            
+            return {
+                isValid: errorMessages.length === 0,
+                errors: errorMessages,
+                totalSize: totalSize
+            };
+        }
+
+        // Helper function to format file sizes
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        // Helper function to get field name for error messages
+        function getFieldName(inputId) {
+            const names = {
+                'shopPicture': 'Shop Picture',
+                'cnicPicture': 'CNIC Picture', 
+                'qrCode': 'QR Code'
+            };
+            return names[inputId] || inputId;
+        }
+
+        document.getElementById('merchantForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            // Basic validation (kept the same logic)
+            // Basic validation
             const requiredFields = document.querySelectorAll('[required]');
             let isValid = true;
             
@@ -661,31 +727,54 @@
                 return;
             }
             
-            // FIX: Create the FormData object, which now works because 
-            // all fields have a 'name' attribute. This object correctly 
-            // bundles text and binary file data into a multipart format.
-            const formData = new FormData(this);
+            // Validate file sizes
+            const fileValidation = validateFileSizes();
+            if (!fileValidation.isValid) {
+                alert('File Size Limits:\n\n' + fileValidation.errors.join('\n\n'));
+                return;
+            }
             
-            // Send data to n8n webhook
-            fetch(WEBHOOK_URL, {
-                method: 'POST',
-                // 🛑 IMPORTANT FIX: We REMOVE the 'Content-Type': 'application/json' header.
-                // The browser will automatically set the correct 'multipart/form-data' 
-                // Content-Type when sending a FormData object.
-                body: formData // FIX: Send the FormData object directly
-            })
-            .then(response => {
+            try {
+                // Show loading state
+                const submitBtn = e.target.querySelector('.submit-btn');
+                const originalText = submitBtn.innerHTML;
+                submitBtn.innerHTML = 'Submitting...';
+                submitBtn.disabled = true;
+                
+                // Create FormData object
+                const formData = new FormData(this);
+                
+                console.log(`Submitting form with total size: ${formatFileSize(fileValidation.totalSize)}`);
+                
+                // Send data to n8n webhook
+                const response = await fetch(WEBHOOK_URL, {
+                    method: 'POST',
+                    body: formData
+                });
+                
                 if (response.ok) {
                     alert('Form submitted successfully!');
                     document.getElementById('merchantForm').reset();
                 } else {
-                    alert('There was an error submitting the form. Please check your n8n workflow and try again.');
+                    if (response.status === 413) {
+                        alert(
+                            'Server rejected: File size too large.\n\n' +
+                            'Your current files: ' + formatFileSize(fileValidation.totalSize) + '\n' +
+                            'Please reduce file sizes and try again.'
+                        );
+                    } else {
+                        alert(`Server error (Status: ${response.status}). Please try again.`);
+                    }
                 }
-            })
-            .catch(error => {
+            } catch (error) {
                 console.error('Error:', error);
-                alert('A network error occurred. Please check your connection.');
-            });
+                alert('Network error occurred. Please check your connection and try again.');
+            } finally {
+                // Reset button state
+                const submitBtn = e.target.querySelector('.submit-btn');
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
         });
         
         // Show/hide other bank field
